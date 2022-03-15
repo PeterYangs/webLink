@@ -1,4 +1,13 @@
 获取网站所有链接
+<hr/>
+
+安装
+```shell
+go get github.com/PeterYangs/webLink
+```
+
+
+使用
 ```go
 package main
 
