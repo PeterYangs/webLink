@@ -2,6 +2,7 @@ package webLink
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/PeterYangs/request/v2"
 	"github.com/PuerkitoBio/goquery"
@@ -53,9 +54,14 @@ func (w *webLink) Link(link string) *webLink {
 
 }
 
-func (w *webLink) Run() {
+func (w *webLink) Run() error {
 
 	defer w.file.Close()
+
+	if w.file == nil {
+
+		return errors.New("未配置文件地址")
+	}
 
 	for i := 0; i < 8; i++ {
 
@@ -65,6 +71,8 @@ func (w *webLink) Run() {
 	}
 
 	w.wait.Wait()
+
+	return nil
 
 }
 
