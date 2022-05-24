@@ -8,11 +8,13 @@ import (
 
 func main() {
 
-	c, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	c, _ := context.WithTimeout(context.Background(), 50*time.Minute)
 
 	w := webLink.NewWebLink(c, "url.txt")
 
 	w.Link("https://www.925g.com/")
+
+	w.Regular(`\.html$`)
 
 	w.Run()
 

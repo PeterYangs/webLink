@@ -15,15 +15,16 @@ import (
 )
 
 type webLink struct {
-	cxt    context.Context
-	client *request.Client
-	link   string
-	list   sync.Map
-	host   string
-	scheme string
-	lock   sync.Mutex
-	file   *os.File
-	wait   sync.WaitGroup
+	cxt     context.Context
+	client  *request.Client
+	link    string
+	list    sync.Map
+	host    string
+	scheme  string
+	lock    sync.Mutex
+	file    *os.File
+	wait    sync.WaitGroup
+	regular string
 }
 
 func NewWebLink(cxt context.Context, filePath string) *webLink {
@@ -52,6 +53,13 @@ func (w *webLink) Link(link string) *webLink {
 
 	return w
 
+}
+
+func (w *webLink) Regular(regular string) *webLink {
+
+	w.regular = regular
+
+	return w
 }
 
 func (w *webLink) Run() error {
@@ -191,9 +199,22 @@ func (w *webLink) putUrl(u string) bool {
 
 		w.list.Store(u, u)
 
-		fmt.Println(u)
+		if w.regular != "" {
 
-		w.file.Write([]byte(u + "\n"))
+			re1, _ := regexp.MatchString(w.regular, strings.Replace(u, w.scheme+"://"+w.host, "", 1))
+
+			if re1 {
+
+				w.file.Write([]byte(u + "\n"))
+			}
+
+		} else {
+
+			w.file.Write([]byte(u + "\n"))
+
+		}
+
+		fmt.Println(u)
 
 		return true
 
