@@ -33,7 +33,7 @@ func NewWebLink(cxt context.Context, filePath string) *webLink {
 
 	c.Timeout(15 * time.Second)
 
-	f, _ := os.OpenFile(filePath, os.O_CREATE|os.O_RDWR, 0755)
+	f, _ := os.OpenFile(filePath, os.O_CREATE|os.O_RDWR, 0644)
 
 	return &webLink{cxt: cxt, client: c, list: sync.Map{}, lock: sync.Mutex{}, file: f, wait: sync.WaitGroup{}}
 }
